@@ -1,10 +1,12 @@
 package cn.edu.hitsz.compiler.symtab;
 
 import cn.edu.hitsz.compiler.NotImplementedException;
+import cn.edu.hitsz.compiler.lexer.TokenKind;
 import cn.edu.hitsz.compiler.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,8 +25,12 @@ public class SymbolTable {
      * @return 该符号在符号表中的条目
      * @throws RuntimeException 该符号在表中不存在
      */
+    private static final Map<String, SymbolTableEntry> symbolTable_ = new HashMap<>();
     public SymbolTableEntry get(String text) {
-        throw new NotImplementedException();
+        if (!symbolTable_.containsKey(text)) {
+            throw new RuntimeException("Symbol not found: " + text);
+        }
+        return symbolTable_.get(text);
     }
 
     /**
@@ -35,7 +41,12 @@ public class SymbolTable {
      * @throws RuntimeException 该符号已在表中存在
      */
     public SymbolTableEntry add(String text) {
-        throw new NotImplementedException();
+        if (symbolTable_.containsKey(text)) {
+            throw new RuntimeException("Symbol already exists: " + text);
+        }
+        var entry = new SymbolTableEntry(text);
+        symbolTable_.put(text, entry);
+        return entry;
     }
 
     /**
@@ -45,7 +56,7 @@ public class SymbolTable {
      * @return 该符号的条目是否位于符号表中
      */
     public boolean has(String text) {
-        throw new NotImplementedException();
+        return symbolTable_.containsKey(text);
     }
 
     /**
@@ -54,7 +65,7 @@ public class SymbolTable {
      * @return 符号表的所有条目
      */
     private Map<String, SymbolTableEntry> getAllEntries() {
-        throw new NotImplementedException();
+        return symbolTable_;
     }
 
     /**
